@@ -9,7 +9,7 @@ This is a simple example of a Django Rest API.
 `Note: Database already created, no need to create a new one`
 
 ## Usage
-type `py run.py` to start the server 
+type `python3 run.py` to start the server 
 
 
 ## Paths
