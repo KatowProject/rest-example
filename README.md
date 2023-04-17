@@ -16,8 +16,22 @@ type `python3 run.py` to start the server
 
 ### Public
 ### `/api/register` - POST - Register a new user
+Example of the body:
+```json
+{   
+    "name": "Full Name",
+    "email": "user@mail.com",
+    "password": "password",
+}
+```
 ### `/api/login` - POST - Login a user
-   
+Example of the body:
+```json
+{   
+    "email": "user@mail.com",
+    "password": "password",
+}
+```
 ### Authenticated
 JWT Token is required for all the following paths set to HTTP Header `Authorization: Bearer {token}`
 
