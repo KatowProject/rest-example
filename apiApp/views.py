@@ -22,6 +22,9 @@ def register_user(request):
     if (user_isExits):
         return Response({ 'success': False, 'message': 'User already exists'}, status=400)
     
+    if data.get('is_admin') != None:
+        data.pop('is_admin')
+        
     serializer = UserSerializer(data=data)
     serializer.is_valid(raise_exception=True)
     serializer.save()
@@ -113,9 +116,9 @@ def create_user(request):
         return Response(message, status=400)
     
     user_isExits = User.objects.filter(email=data['email']).exists()
-    if (user_isExits):
+    if user_isExits:
         return Response({ 'success': False, 'message': 'User already exists'}, status=400)
-
+        
     serializer = UserSerializer(data=data)
     serializer.is_valid(raise_exception=True)
     serializer.save()
