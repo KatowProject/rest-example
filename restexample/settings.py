@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apiApp.apps.ApiappConfig',
     'rest_framework'
-    'seed'
 ]
 
 MIDDLEWARE = [
