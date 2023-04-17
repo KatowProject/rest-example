@@ -89,7 +89,7 @@ def login(request):
 @decorator_from_middleware(jwtCheck)
 def get_all_users(request):
     if not request.user['is_admin']:
-        return Response({ 'success': False, 'message': 'You are not admin'}, status=400)
+        return Response({ 'success': False, 'message': 'You are not admin!'}, status=400)
         
     users = User.objects.all().values('id', 'name', 'email', 'is_admin')
         
@@ -101,7 +101,40 @@ def get_all_users(request):
 
     return response
     
-@api_view(['GET', 'POST', 'PUT', 'DELETE'])
+@api_view(['POST'])
+@decorator_from_middleware(jwtCheck)
+def create_user(request):
+    if not request.user['is_admin']:
+        return Response({ 'success': False, 'message': 'You are not admin!'}, status=400)
+    
+    data = request.data
+    if data.get('name') == None or data.get('email') == None or data.get('password') == None or data.get('is_admin') == None:
+        message = { 'success': False, 'message': 'Please provide all the fields'}
+        return Response(message, status=400)
+    
+    user_isExits = User.objects.filter(email=data['email']).exists()
+    if (user_isExits):
+        return Response({ 'success': False, 'message': 'User already exists'}, status=400)
+
+    serializer = UserSerializer(data=data)
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
+    
+    response = Response(status=200)
+    response.data = {
+        'success': True,
+        'message': 'User created successfully',
+        'data': {
+            'id': serializer.data['id'],
+            'name': serializer.data['name'],
+            'email': serializer.data['email'],
+            'is_admin': serializer.data['is_admin']
+        }
+    }
+
+    return response
+
+@api_view(['GET', 'PUT', 'DELETE'])
 @decorator_from_middleware(jwtCheck)
 def user_management(request, id):
     if not request.user['is_admin']:
@@ -147,5 +180,4 @@ def user_management(request, id):
             'message': 'User deleted successfully'
         }
         return response
-    
     
