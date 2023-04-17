@@ -15,8 +15,8 @@ type `py run.py` to start the server
 ## Paths
 
 ### Public
-1. /api/register/ - POST - Register a new user
-2. /api/login/ - POST - Login a user
+### `/api/register/` - POST - Register a new user
+### `/api/login/` - POST - Login a user
    
 ### Authenticated
 JWT Token is required for all the following paths set to HTTP Header `Authorization: Bearer {token}`
